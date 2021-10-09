@@ -61,7 +61,7 @@ function writeNewNote() {
             return console.log(err);
         }
 
-        console.log("Successfully posted.");
+        console.log("Successfully started.");
     });
 }
 
