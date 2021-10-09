@@ -11,6 +11,7 @@ app.use(express.json());
 
 currentID = notes.length;
 
+
 app.get("/api/notes", function (req, res) {
     return res.json(notes);
 });
@@ -22,28 +23,28 @@ app.post("/api/notes", function (req, res) {
     console.log(newNote);
     notes.push(newNote);
 
-    writeNewNote();
+    rewriteNotes();
     return res.status(200).end();
 });
 
 app.delete("/api/notes/:id", function (req, res) {
-    const requestID = req.params.id;
-    console.log(requestID);
+    res.send('Got a DELETE request at /api/notes/:id')
 
-    let note = notes.filter(note => {
-        return note.id === requestID;
-    })[0];
+    var id = req.params.id;
+    var idLess = notes.filter(function (less) {
+        return less.id < id;
+    });
+    var idGreater = notes.filter(function (greater) {
+        return greater.id > id;
+    });
 
-    console.log(note);
-    const index = notes.indexOf(note);
+    notes = idLess.concat(idGreater);
+    rewriteNotes();
+})
 
-    notes.splice(index, 1);
-
-    fs.writeFileSync('./db/db.json', JSON.stringify(notes), 'utf8');
-    res.json("Note has been deleted.");
-});
 
 app.use(express.static("public"));
+
 
 
 app.get("/notes", function (req, res) {
@@ -54,7 +55,7 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-function writeNewNote() {
+function rewriteNotes() {
     fs.writeFile("db/db.json", JSON.stringify(notes), function (err) {
         if (err) {
             console.log("error")

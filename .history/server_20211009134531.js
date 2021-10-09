@@ -11,6 +11,7 @@ app.use(express.json());
 
 currentID = notes.length;
 
+
 app.get("/api/notes", function (req, res) {
     return res.json(notes);
 });
@@ -22,7 +23,7 @@ app.post("/api/notes", function (req, res) {
     console.log(newNote);
     notes.push(newNote);
 
-    writeNewNote();
+    rewriteNotes();
     return res.status(200).end();
 });
 
@@ -30,20 +31,21 @@ app.delete("/api/notes/:id", function (req, res) {
     const requestID = req.params.id;
     console.log(requestID);
 
-    let note = notes.filter(note => {
+    let note = notesData.filter(note => {
         return note.id === requestID;
     })[0];
 
     console.log(note);
-    const index = notes.indexOf(note);
+    const index = notesData.indexOf(note);
 
-    notes.splice(index, 1);
+    notesData.splice(index, 1);
 
-    fs.writeFileSync('./db/db.json', JSON.stringify(notes), 'utf8');
-    res.json("Note has been deleted.");
+    fs.writeFileSync('./db/db.json', JSON.stringify(notesData), 'utf8');
+    res.json("Note deleted");
 });
 
 app.use(express.static("public"));
+
 
 
 app.get("/notes", function (req, res) {
@@ -54,7 +56,7 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-function writeNewNote() {
+function rewriteNotes() {
     fs.writeFile("db/db.json", JSON.stringify(notes), function (err) {
         if (err) {
             console.log("error")

@@ -40,7 +40,7 @@ app.delete("/api/notes/:id", function (req, res) {
     notes.splice(index, 1);
 
     fs.writeFileSync('./db/db.json', JSON.stringify(notes), 'utf8');
-    res.json("Note has been deleted.");
+    res.json("Note deleted");
 });
 
 app.use(express.static("public"));

@@ -11,6 +11,7 @@ app.use(express.json());
 
 currentID = notes.length;
 
+
 app.get("/api/notes", function (req, res) {
     return res.json(notes);
 });
@@ -22,28 +23,47 @@ app.post("/api/notes", function (req, res) {
     console.log(newNote);
     notes.push(newNote);
 
-    writeNewNote();
+    rewriteNotes();
     return res.status(200).end();
 });
 
-app.delete("/api/notes/:id", function (req, res) {
-    const requestID = req.params.id;
-    console.log(requestID);
+app.delete("/api/notes/:id", (req, res) => {
+    let chosenNoteToDelete = req.params.id;
+    fs.readFile(__dirname + "/db/db.json", (err, data) => {
+        if (err) {
+            console.log(err);
+            res.sendStatus(500);
+            return;
+        }
+        try {
+            let noteDel = JSON.parse(data);
+        } catch(e) {
+            console.log(err);
+            res.sendStatus(500);
+            return;
+        }
 
-    let note = notes.filter(note => {
-        return note.id === requestID;
-    })[0];
+        for (let i = 0; i < nodeDel.length; i++) {
+            if (noteDel[i].id === chosenNoteToDelete) {
+                noteDel.splice(i, 1);
+                return;
+            }
+        }
 
-    console.log(note);
-    const index = notes.indexOf(note);
-
-    notes.splice(index, 1);
-
-    fs.writeFileSync('./db/db.json', JSON.stringify(notes), 'utf8');
-    res.json("Note has been deleted.");
+        fs.writeFile(__dirname + "/db/db.json", JSON.stringify(noteDel), (err) => {
+            if (err) {
+                console.log(err);
+                res.sendStatus(500);
+                return;
+            }
+            res.send("Successfully deleted");
+        });
+    });
 });
 
+
 app.use(express.static("public"));
+
 
 
 app.get("/notes", function (req, res) {
@@ -54,7 +74,7 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
-function writeNewNote() {
+function rewriteNotes() {
     fs.writeFile("db/db.json", JSON.stringify(notes), function (err) {
         if (err) {
             console.log("error")
