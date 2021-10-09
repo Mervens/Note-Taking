@@ -15,7 +15,8 @@ THEN that note appears in the right-hand column
 WHEN I click on the Write icon in the navigation at the top of the page
 THEN I am presented with empty fields to enter a new note title and the note’s text in the right-hand column
 
-# Table Of Contents
+# Table Of Contents!
+
 - [Description](#description)
 - [How It Works](#how-it-works)
 - [Example](#example)
@@ -34,8 +35,8 @@ This assignment was to use Express.js to create the backend for a note taking ap
 `node server.js`
 
 ## Example
-![NoteTake](public\assets\C11-1.png)
-![NoteTake2](public\assets\C11-2.png)
+![NoteTake](https://user-images.githubusercontent.com/82620500/136669671-33f4cdc5-2055-4fa6-8238-a33f1485ec37.png)
+![NoteTake2](https://user-images.githubusercontent.com/82620500/136669672-fb408947-cf61-4807-954f-980b0315b644.png)
 
 ## Shareable link to this repo:  
 
@@ -45,6 +46,3 @@ This assignment was to use Express.js to create the backend for a note taking ap
 ## Creator's GitHub Profile:  
 
 ### Creator: **https://github.com/Mervens.**
-
-
-
